@@ -31,7 +31,7 @@ export const ListingPair = () => {
 
   useEffect(() => {
     fetchListingPair();
-    setInterval(() => fetchListingPair(), 60000);
+    setInterval(() => fetchListingPair(), 1000);
   }, []);
 
   console.log(isDisabled);
