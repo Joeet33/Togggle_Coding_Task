@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 
 export const ListingPair = () => {
   const [listingPair, setListingPair] = useState<any>();
-  const [oldPrice, setOldPrice] = useState();
+  const [priceUp, setPriceUp] = useState();
+  const [priceDown, setPriceDown] = useState();
   const [newPrice, setNewPrice] = useState();
   const [isDisabled, setIsDisabled] = useState(false);
   const [counter, setCounter] = useState(60);
@@ -15,8 +16,14 @@ export const ListingPair = () => {
     setListingPair(res);
   };
 
-  const handleClick = () => {
-    setOldPrice(listingPair.price);
+  const handleClickUp = () => {
+    setPriceUp(listingPair.price);
+    setIsDisabled(true);
+    setNewPrice(undefined);
+  };
+
+  const handleClickDown = () => {
+    setPriceDown(listingPair.price);
     setIsDisabled(true);
     setNewPrice(undefined);
   };
@@ -43,14 +50,22 @@ export const ListingPair = () => {
     <>
       <div>{listingPair && listingPair.price}</div>
       <div>{counter == 60 ? null : counter}</div>
-      <div>{oldPrice && oldPrice}</div>
+      <div>{priceUp && priceUp}</div>
+      <div>{priceDown && priceDown}</div>
       <div>{newPrice && newPrice}</div>
       <button
         disabled={isDisabled}
-        onClick={handleClick}
+        onClick={handleClickUp}
         className="bg-gray-500"
       >
-        click
+        Up
+      </button>
+      <button
+        disabled={isDisabled}
+        onClick={handleClickDown}
+        className="bg-gray-500"
+      >
+        Down
       </button>
     </>
   );
