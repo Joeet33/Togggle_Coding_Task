@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 
 export const ListingPair = () => {
   const [listingPair, setListingPair] = useState<any>();
+  const [oldPrice, setOldPrice] = useState();
+  const [newPrice, setNewPrice] = useState();
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [counter, setCounter] = useState(60);
 
   const fetchListingPair = async () => {
     const req = await fetch(
@@ -11,13 +15,16 @@ export const ListingPair = () => {
     setListingPair(res);
   };
 
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [counter, setCounter] = useState(60);
-
   const handleClick = () => {
-    fetchListingPair();
+    setOldPrice(listingPair.price);
     setIsDisabled(true);
+    setNewPrice(undefined);
   };
+
+  useEffect(() => {
+    fetchListingPair();
+    setInterval(() => fetchListingPair(), 1000);
+  }, []);
 
   useEffect(() => {
     if (isDisabled == true) {
@@ -25,21 +32,19 @@ export const ListingPair = () => {
     }
   }, [isDisabled]);
 
-  if (counter == 0) setCounter(60);
+  if (counter == 0) {
+    setCounter(60);
+    setNewPrice(listingPair.price);
+  }
 
   if (isDisabled == true) setTimeout(() => setCounter(counter - 1), 1000);
-
-  useEffect(() => {
-    fetchListingPair();
-    setInterval(() => fetchListingPair(), 1000);
-  }, []);
-
-  console.log(isDisabled);
 
   return (
     <>
       <div>{listingPair && listingPair.price}</div>
       <div>{counter == 60 ? null : counter}</div>
+      <div>{oldPrice && oldPrice}</div>
+      <div>{newPrice && newPrice}</div>
       <button
         disabled={isDisabled}
         onClick={handleClick}
