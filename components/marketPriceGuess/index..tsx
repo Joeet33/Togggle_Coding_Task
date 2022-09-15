@@ -76,11 +76,6 @@ export const MarketPriceGuess = () => {
     }
   }, [newPriceDown]);
 
-  console.log(score);
-  console.log(oldPrice);
-  console.log(newPriceUp);
-  console.log(newPriceDown);
-
   return (
     <>
       <Timer activate={isDisabled} />
