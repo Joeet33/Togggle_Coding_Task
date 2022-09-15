@@ -5,7 +5,8 @@ import { Timer } from "../timer";
 export const ListingPair = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [price, setPrice] = useState<any>();
-  const [newPrice, setNewPrice] = useState<any>();
+  const [newPriceUp, setNewPriceUp] = useState<any>();
+  const [newPriceDown, setNewPriceDown] = useState<any>();
   const [score, setScore] = useState(0);
 
   const fetchPrice = async () => {
@@ -16,34 +17,62 @@ export const ListingPair = () => {
     setPrice(res);
   };
 
-  const fetchNewPrice = async () => {
+  const fetchNewPriceUp = async () => {
     const req = await fetch(
       "https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT"
     );
     const res = await req.json();
-    setNewPrice(res);
+    setNewPriceUp(res);
+  };
+
+  const fetchNewPriceDown = async () => {
+    const req = await fetch(
+      "https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT"
+    );
+    const res = await req.json();
+    setNewPriceDown(res);
   };
 
   const handleOnClickUp = () => {
     setIsDisabled(true);
     setTimeout(() => setIsDisabled(false), 5000);
-    setNewPrice(undefined);
+    setNewPriceUp(undefined);
+    setNewPriceDown(undefined);
     fetchPrice();
-    setTimeout(() => fetchNewPrice(), 5000);
+    setTimeout(() => fetchNewPriceUp(), 5000);
+  };
+
+  const handleOnClickDown = () => {
+    setIsDisabled(true);
+    setTimeout(() => setIsDisabled(false), 5000);
+    setNewPriceUp(undefined);
+    setNewPriceDown(undefined);
+    fetchPrice();
+    setTimeout(() => fetchNewPriceDown(), 5000);
   };
 
   useEffect(() => {
-    if (newPrice && newPrice.price > price.price) {
+    if (newPriceUp && newPriceUp.price > price.price) {
       setScore(score + 1);
     }
-    if (newPrice && newPrice.price < price.price) {
+    if (newPriceUp && newPriceUp.price < price.price) {
       setScore(score - 1);
     }
-  }, [newPrice]);
+  }, [newPriceUp]);
+
+  useEffect(() => {
+    if (newPriceDown && newPriceDown.price > price.price) {
+      setScore(score - 1);
+    }
+    if (newPriceDown && newPriceDown.price < price.price) {
+      setScore(score + 1);
+    }
+  }, [newPriceDown]);
 
   console.log(score);
   console.log(price);
-  console.log(newPrice);
+  console.log(newPriceUp);
+  console.log(newPriceDown);
 
   return (
     <>
@@ -57,8 +86,8 @@ export const ListingPair = () => {
         Up
       </button>
       <button
-        // disabled={isDisabled}
-        // onClick={handleClickDown}
+        disabled={isDisabled}
+        onClick={handleOnClickDown}
         className="bg-gray-500"
       >
         Down
