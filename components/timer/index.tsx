@@ -1,8 +1,5 @@
 import { useState } from "react";
-
-interface ActivateProps {
-  activate: any;
-}
+import { ActivateProps } from "../interfaces/activateProps";
 
 export const Timer = ({ activate }: ActivateProps) => {
   const [counter, setCounter] = useState(60);

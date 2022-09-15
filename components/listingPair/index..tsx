@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import { ListingProps } from "../interfaces/listingProps";
 import { LatestPrice } from "../latestPrice";
 import { Timer } from "../timer";
 
 export const ListingPair = () => {
   const [isDisabled, setIsDisabled] = useState(false);
-  const [price, setPrice] = useState<any>();
-  const [newPriceUp, setNewPriceUp] = useState<any>();
-  const [newPriceDown, setNewPriceDown] = useState<any>();
+  const [price, setPrice] = useState<ListingProps>();
+  const [newPriceUp, setNewPriceUp] = useState<ListingProps>();
+  const [newPriceDown, setNewPriceDown] = useState<ListingProps>();
   const [score, setScore] = useState(0);
 
   const fetchPrice = async () => {
@@ -35,37 +36,43 @@ export const ListingPair = () => {
 
   const handleOnClickUp = () => {
     setIsDisabled(true);
-    setTimeout(() => setIsDisabled(false), 5000);
+    setTimeout(() => setIsDisabled(false), 60000);
     setNewPriceUp(undefined);
     setNewPriceDown(undefined);
     fetchPrice();
-    setTimeout(() => fetchNewPriceUp(), 5000);
+    setTimeout(() => fetchNewPriceUp(), 60000);
   };
 
   const handleOnClickDown = () => {
     setIsDisabled(true);
-    setTimeout(() => setIsDisabled(false), 5000);
+    setTimeout(() => setIsDisabled(false), 60000);
     setNewPriceUp(undefined);
     setNewPriceDown(undefined);
     fetchPrice();
-    setTimeout(() => fetchNewPriceDown(), 5000);
+    setTimeout(() => fetchNewPriceDown(), 60000);
   };
 
   useEffect(() => {
-    if (newPriceUp && newPriceUp.price > price.price) {
-      setScore(score + 1);
-    }
-    if (newPriceUp && newPriceUp.price < price.price) {
-      setScore(score - 1);
+    if (newPriceUp && newPriceUp && price && price) {
+      if (newPriceUp.price > price.price) {
+        setScore(score + 1);
+      }
+
+      if (newPriceUp.price < price.price) {
+        setScore(score - 1);
+      }
     }
   }, [newPriceUp]);
 
   useEffect(() => {
-    if (newPriceDown && newPriceDown.price > price.price) {
-      setScore(score - 1);
-    }
-    if (newPriceDown && newPriceDown.price < price.price) {
-      setScore(score + 1);
+    if (newPriceDown && newPriceDown && price && price) {
+      if (newPriceDown.price > price.price) {
+        setScore(score - 1);
+      }
+
+      if (newPriceDown.price < price.price) {
+        setScore(score + 1);
+      }
     }
   }, [newPriceDown]);
 

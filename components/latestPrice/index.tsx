@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { ListingProps } from "../interfaces/listingProps";
 
 export const LatestPrice = () => {
-    const [latestPrice, setLatestPrice] = useState<any>();
+    const [latestPrice, setLatestPrice] = useState<ListingProps>();
 
     const fetchLatestPrice = async () => {
         const req = await fetch(
