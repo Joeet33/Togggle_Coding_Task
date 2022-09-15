@@ -1,3 +1,3 @@
 export interface ActivateProps {
-    activate: boolean;
+    activate: any;
   }

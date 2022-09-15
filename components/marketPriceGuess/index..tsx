@@ -3,7 +3,7 @@ import { ListingProps } from "../interfaces/listingProps";
 import { LatestPrice } from "../latestPrice";
 import { Timer } from "../timer";
 
-export const ListingPair = () => {
+export const MarketPriceGuess = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [oldPrice, setOldPrice] = useState<ListingProps>();
   const [newPriceUp, setNewPriceUp] = useState<ListingProps>();
@@ -85,6 +85,7 @@ export const ListingPair = () => {
     <>
       <Timer activate={isDisabled} />
       <LatestPrice />
+      <div>{score}</div>
       <button
         disabled={isDisabled}
         onClick={handleOnClickUp}

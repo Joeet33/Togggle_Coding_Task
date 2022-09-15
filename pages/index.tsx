@@ -1,9 +1,10 @@
 import type { NextPage } from "next";
-import { ListingPair } from "../components/listingPair/index.";
+import { MarketPriceGuess } from "../components/marketPriceGuess/index.";
+
 
 const Home: NextPage = () => {
   return ( <>
-  <ListingPair />
+  <MarketPriceGuess />
   </>)
 };
 
