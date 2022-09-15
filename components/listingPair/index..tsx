@@ -5,7 +5,7 @@ import { Timer } from "../timer";
 
 export const ListingPair = () => {
   const [isDisabled, setIsDisabled] = useState(false);
-  const [price, setPrice] = useState<ListingProps>();
+  const [oldPrice, setOldPrice] = useState<ListingProps>();
   const [newPriceUp, setNewPriceUp] = useState<ListingProps>();
   const [newPriceDown, setNewPriceDown] = useState<ListingProps>();
   const [score, setScore] = useState(0);
@@ -15,7 +15,7 @@ export const ListingPair = () => {
       "https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT"
     );
     const res = await req.json();
-    setPrice(res);
+    setOldPrice(res);
   };
 
   const fetchNewPriceUp = async () => {
@@ -53,31 +53,31 @@ export const ListingPair = () => {
   };
 
   useEffect(() => {
-    if (newPriceUp && newPriceUp && price && price) {
-      if (newPriceUp.price > price.price) {
+    if (newPriceUp && newPriceUp && oldPrice && oldPrice) {
+      if (newPriceUp.price > oldPrice.price) {
         setScore(score + 1);
       }
 
-      if (newPriceUp.price < price.price) {
+      if (newPriceUp.price < oldPrice.price) {
         setScore(score - 1);
       }
     }
   }, [newPriceUp]);
 
   useEffect(() => {
-    if (newPriceDown && newPriceDown && price && price) {
-      if (newPriceDown.price > price.price) {
+    if (newPriceDown && newPriceDown && oldPrice && oldPrice) {
+      if (newPriceDown.price > oldPrice.price) {
         setScore(score - 1);
       }
 
-      if (newPriceDown.price < price.price) {
+      if (newPriceDown.price < oldPrice.price) {
         setScore(score + 1);
       }
     }
   }, [newPriceDown]);
 
   console.log(score);
-  console.log(price);
+  console.log(oldPrice);
   console.log(newPriceUp);
   console.log(newPriceDown);
 
