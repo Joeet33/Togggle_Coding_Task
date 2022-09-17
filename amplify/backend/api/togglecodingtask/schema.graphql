@@ -1,0 +1,4 @@
+type Score @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  score: Int!
+} 

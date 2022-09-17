@@ -1,0 +1,6 @@
+{
+  "AppSyncApiName": "togglecodingtask",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2022-09-17T11:38:51.495Z"
+}

@@ -2,13 +2,67 @@ import { useEffect, useState } from "react";
 import { ListingProps } from "../interfaces/listingProps";
 import { LatestPrice } from "../latestPrice";
 import { Timer } from "../timer";
+import { API } from "aws-amplify";
+import { updateScore as updateScoreMutation } from "../../src/graphql/mutations.js";
+import { listScores } from "../../src/graphql/queries.js";
 
 export const MarketPriceGuess = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [oldPrice, setOldPrice] = useState<ListingProps>();
   const [newPriceUp, setNewPriceUp] = useState<ListingProps>();
   const [newPriceDown, setNewPriceDown] = useState<ListingProps>();
-  const [score, setScore] = useState(0);
+  const [scoresData, setScoresData] = useState<any>();
+
+  useEffect(() => {
+    fetchScores();
+  }, []);
+
+  async function fetchScores() {
+    const apiData: any = await API.graphql({ query: listScores });
+    setScoresData(apiData.data.listScores.items);
+  }
+
+  async function updateScoreWinning() {
+    await API.graphql({
+      query: updateScoreMutation,
+      variables: {
+        input: {
+          id: scoresData && scoresData[0]?.id,
+          score: scoresData && scoresData[0].score + 1,
+          _version: scoresData && scoresData[0]._version,
+        },
+      },
+    });
+    fetchScores();
+  }
+
+  const updateScoreLosing = async () => {
+    await API.graphql({
+      query: updateScoreMutation,
+      variables: {
+        input: {
+          id: scoresData && scoresData[0]?.id,
+          score: scoresData && scoresData[0].score - 1,
+          _version: scoresData && scoresData[0]._version,
+        },
+      },
+    });
+    fetchScores();
+  };
+
+  const resetScore = async () => {
+    await API.graphql({
+      query: updateScoreMutation,
+      variables: {
+        input: {
+          id: scoresData && scoresData[0]?.id,
+          score: 0,
+          _version: scoresData && scoresData[0]._version,
+        },
+      },
+    });
+    fetchScores();
+  };
 
   const fetchPrice = async () => {
     const req = await fetch(
@@ -55,11 +109,11 @@ export const MarketPriceGuess = () => {
   useEffect(() => {
     if (newPriceUp && newPriceUp && oldPrice && oldPrice) {
       if (newPriceUp.price > oldPrice.price) {
-        setScore(score + 1);
+        updateScoreWinning();
       }
 
       if (newPriceUp.price < oldPrice.price) {
-        setScore(score - 1);
+        updateScoreLosing();
       }
     }
   }, [newPriceUp]);
@@ -67,20 +121,23 @@ export const MarketPriceGuess = () => {
   useEffect(() => {
     if (newPriceDown && newPriceDown && oldPrice && oldPrice) {
       if (newPriceDown.price > oldPrice.price) {
-        setScore(score - 1);
+        updateScoreLosing();
       }
 
       if (newPriceDown.price < oldPrice.price) {
-        setScore(score + 1);
+        updateScoreWinning();
       }
     }
   }, [newPriceDown]);
+
+  console.log(scoresData);
 
   return (
     <>
       <Timer activate={isDisabled} />
       <LatestPrice />
-      <div>{score}</div>
+      <div>{scoresData && scoresData[0].score}</div>
+      <button onClick={resetScore}>reset</button>
       <button
         disabled={isDisabled}
         onClick={handleOnClickUp}
