@@ -5,13 +5,14 @@ import { Timer } from "../timer";
 import { API } from "aws-amplify";
 import { updateScore as updateScoreMutation } from "../../src/graphql/mutations.js";
 import { listScores } from "../../src/graphql/queries.js";
+import { ScoresProps } from "../interfaces/scoresProps";
 
 export const MarketPriceGuess = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [oldPrice, setOldPrice] = useState<ListingProps>();
   const [newPriceUp, setNewPriceUp] = useState<ListingProps>();
   const [newPriceDown, setNewPriceDown] = useState<ListingProps>();
-  const [scoresData, setScoresData] = useState<any>();
+  const [scoresData, setScoresData] = useState<ScoresProps[]>();
 
   useEffect(() => {
     fetchScores();
@@ -129,8 +130,6 @@ export const MarketPriceGuess = () => {
       }
     }
   }, [newPriceDown]);
-
-  console.log(scoresData);
 
   return (
     <>
