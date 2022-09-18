@@ -17,5 +17,7 @@ export const LatestPrice = () => {
     setInterval(() => fetchLatestPrice(), 1000);
   }, []);
 
-  return <>{latestPrice && latestPrice.price}</>;
+  const price = Number(latestPrice && latestPrice.price).toFixed(2);
+
+  return <>BTC / USD: {price}</>;
 };
