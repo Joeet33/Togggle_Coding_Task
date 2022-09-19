@@ -1,35 +1,5 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+App Functionality and how to run the app
 
-## Getting Started
+The application requires users to make a prediction on whether the price of BTC will be higher or lower in 60 seconds.  The initial value of BTC/USD will be locked in as soon as the user clicks either the up or down arrow. After the user makes a prediction there is a 60 second cooldown where the user is unable to make a new prediction. When the 60 seconds timer is complete, the updated value of BTC/USD will be locked in. Both these values are stored and compared. If the user clicks on the green up arrow and the updated value is greater than the initial value, the user will gain a point. If the updated score is lower the user will lose a point. The opposite is true for the red down arrow. The score is stored on an AWS backend server and fetched via an api. The enables the score to stay present upon refresh.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# Toggle_Coding_Task
+The application is hoted here:
